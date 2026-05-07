@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================================
+   THEMES — switchable via <html data-theme="dark|corporate">
+   Colors are exposed as RGB triplets so Tailwind's <alpha-value> works.
+   ===================================================================== */
+
+:root,
+[data-theme='dark'] {
+  /* Premium Dark — matches the Vester ROI Intelligence reference */
+  --bg-base: 10 14 26;          /* #0a0e1a — deep navy/black */
+  --bg-surface: 15 23 41;       /* #0f1729 — cards */
+  --bg-elevated: 26 37 64;      /* #1a2540 — hover/elevated */
+  --bg-hover: 35 53 84;         /* #233554 */
+
+  --border: 35 53 84;           /* #233554 */
+  --border-strong: 64 90 130;   /* #405a82 */
+
+  --text-primary: 230 241 255;  /* #e6f1ff */
+  --text-secondary: 148 163 195;/* #94a3c3 */
+  --text-muted: 100 116 139;    /* #64748b */
+  --text-inverse: 10 14 26;     /* #0a0e1a */
+
+  --accent: 100 255 218;        /* #64ffda — cyan */
+  --info: 59 130 246;           /* #3b82f6 — blue */
+  --positive: 34 197 94;        /* #22c55e */
+  --warning: 250 204 21;        /* #facc15 */
+  --negative: 239 68 68;        /* #ef4444 */
+
+  color-scheme: dark;
+}
+
+[data-theme='corporate'] {
+  /* Corporate Yellow — matches Vester website palette */
+  --bg-base: 245 245 245;       /* #f5f5f5 */
+  --bg-surface: 255 255 255;    /* #ffffff */
+  --bg-elevated: 250 250 250;   /* #fafafa */
+  --bg-hover: 240 240 240;      /* #f0f0f0 */
+
+  --border: 230 230 230;        /* #e6e6e6 */
+  --border-strong: 200 200 200; /* #c8c8c8 */
+
+  --text-primary: 28 28 28;     /* #1c1c1c — H2 */
+  --text-secondary: 86 86 86;   /* #565656 — body */
+  --text-muted: 130 130 130;    /* #828282 */
+  --text-inverse: 255 255 255;
+
+  --accent: 242 214 1;          /* #f2d601 — corporate yellow */
+  --info: 51 51 51;             /* #333333 */
+  --positive: 34 150 60;        /* greener for light bg */
+  --warning: 234 179 8;         /* #eab308 */
+  --negative: 220 38 38;        /* #dc2626 */
+
+  color-scheme: light;
+}
+
+/* =====================================================================
+   BASE LAYER
+   ===================================================================== */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body,
+  #root {
+    @apply min-h-screen;
+  }
+
+  body {
+    @apply bg-bg-base text-text-primary font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
+
+  /* Firefox scrollbars */
+  * {
+    scrollbar-color: rgb(var(--border-strong)) transparent;
+    scrollbar-width: thin;
+  }
+
+  /* Webkit scrollbars */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--border-strong));
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--accent) / 0.6);
+    background-clip: content-box;
+  }
+
+  /* Inputs share the surface vibe */
+  input,
+  select,
+  textarea {
+    @apply bg-bg-base/60 border border-border text-text-primary;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    @apply outline-none border-accent;
+    box-shadow: 0 0 0 3px rgb(var(--accent) / 0.15);
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgb(var(--accent) / 0.3);
+    color: rgb(var(--text-primary));
+  }
+}
+
+/* =====================================================================
+   COMPONENTS LAYER — reusable patterns
+   ===================================================================== */
+
+@layer components {
+  /* Glass card — subtle gradient + border */
+  .card {
+    @apply relative rounded-card border border-border bg-bg-surface shadow-card;
+    background-image: linear-gradient(
+      180deg,
+      rgb(var(--bg-surface) / 1) 0%,
+      rgb(var(--bg-base) / 0.6) 100%
+    );
+  }
+
+  .card-elevated {
+    @apply card;
+    background-image: linear-gradient(
+      180deg,
+      rgb(var(--bg-elevated) / 0.9) 0%,
+      rgb(var(--bg-surface) / 0.95) 100%
+    );
+  }
+
+  /* Active card with neon left bar */
+  .card-active::before {
+    content: '';
+    @apply absolute left-0 top-0 h-full w-1 rounded-l-card;
+    background: rgb(var(--accent));
+    box-shadow: 0 0 12px rgb(var(--accent) / 0.6);
+  }
+
+  /* Section label — small uppercase tag (corporate Montserrat style) */
+  .label-tag {
+    @apply font-label text-label uppercase text-accent;
+  }
+
+  /* Display heading (Rajdhani in corporate, Inter elsewhere) */
+  [data-theme='corporate'] .heading-display {
+    @apply font-rajdhani font-semibold;
+  }
+  .heading-display {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  /* KPI big number (mono for tabular alignment) */
+  .kpi-number {
+    @apply font-mono font-bold tabular-nums tracking-tight;
+  }
+
+  /* Pill button */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-chip
+           px-5 py-2.5 text-sm font-semibold uppercase tracking-wider
+           transition-all duration-200 select-none cursor-pointer
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-text-inverse;
+    box-shadow: 0 0 0 1px rgb(var(--accent) / 0.4);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 18px rgb(var(--accent) / 0.55);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-text-primary border border-border;
+  }
+  .btn-ghost:hover {
+    @apply border-accent text-accent;
+  }
+
+  /* Animated industrial grid background — used on hero/landing */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgb(var(--accent) / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--accent) / 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center;
+  }
+
+  /* Impact dot indicator (3 dots, fill based on level) */
+  .impact-dot {
+    @apply inline-block h-1.5 w-1.5 rounded-full bg-text-muted/40;
+  }
+  .impact-dot.on {
+    @apply bg-current;
+    box-shadow: 0 0 6px currentColor;
+  }
+}
+
+/* =====================================================================
+   ANIMATIONS
+   ===================================================================== */
+
+@keyframes gridPan {
+  0% { background-position: 0 0; }
+  100% { background-position: 48px 48px; }
+}
+
+.grid-bg-animated {
+  animation: gridPan 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
