@@ -29,9 +29,21 @@ jobs:
 
       - run: npm run build
 
+      # Force Pages source to GitHub Actions even if it was previously enabled in
+      # "branch" mode. configure-pages@v5 with enablement:true only enables when
+      # absent and does NOT reconfigure an existing site. We do it ourselves.
+      - name: Switch Pages build type to workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          # Try update first; if 404 (Pages not enabled yet) create it.
+          if ! gh api -X PUT "repos/${{ github.repository }}/pages" -f build_type=workflow ; then
+            echo "PUT failed, trying POST to create Pages site with workflow build type"
+            gh api -X POST "repos/${{ github.repository }}/pages" -f build_type=workflow
+          fi
+
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
