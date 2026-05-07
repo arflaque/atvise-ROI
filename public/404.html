@@ -7,7 +7,7 @@
       // GitHub Pages SPA redirect — preserves the path so React Router can pick it up.
       // See: https://github.com/rafgraph/spa-github-pages
       (function () {
-        var segmentCount = 1; // adjust if hosted under a deeper subpath
+        var segmentCount = 0; // 0 for custom domain at root; 1 if hosted under /atvise-ROI/ subpath
         var l = window.location;
         l.replace(
           l.protocol +

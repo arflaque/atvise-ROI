@@ -3,10 +3,11 @@ import react from '@vitejs/plugin-react';
 import fs from 'node:fs';
 import path from 'node:path';
 
-// GitHub repo: arflaque/atvise-ROI  →  https://arflaque.github.io/atvise-ROI/
-// Case-sensitive: must match the repo name exactly. If you switch to a custom
-// domain via CNAME, set this to '/'.
-const REPO_BASE = '/atvise-ROI/';
+// Custom domain configured via public/CNAME → https://roi.vesterbusiness.com/
+// The site is served at the domain root, so base must be '/'. If we ever
+// revert to GitHub Pages default (arflaque.github.io/atvise-ROI/), set this
+// back to '/atvise-ROI/' and remove public/CNAME.
+const REPO_BASE = '/';
 
 /**
  * In dev mode, the root `index.html` is the prebuilt artifact (committed to
