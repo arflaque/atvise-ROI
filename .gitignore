@@ -37,3 +37,8 @@ Thumbs.db
 # Vite
 .vite
 *.local
+
+# TypeScript build artifacts (project references)
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts

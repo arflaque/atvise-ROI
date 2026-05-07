@@ -6,7 +6,7 @@ import type {
   ROIResult,
   ScenarioId,
 } from '../types';
-import { MODULE_CATALOG, MODULE_IDS } from './modules';
+import { MODULE_IDS } from './modules';
 import { SCENARIO_CONFIDENCE, SCENARIO_MULTIPLIERS } from './scenarios';
 
 // =====================================================================

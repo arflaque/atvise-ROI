@@ -2,7 +2,6 @@ import type {
   AppState,
   Currency,
   Locale,
-  ModuleId,
   ProjectContext,
   ScenarioId,
   Theme,
